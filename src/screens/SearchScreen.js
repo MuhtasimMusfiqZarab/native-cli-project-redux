@@ -5,6 +5,9 @@ import ResultList from "../components/ResultList";
 //importing the hooks we have created
 import useResults from "../hooks/useResults";
 
+//-------------using redux
+import RestaurantsList from "../components/RestaurantsList";
+
 const SearchScreen = () => {
   const [term, setTerm] = useState("");
   //extracting values from hooks
@@ -23,7 +26,7 @@ const SearchScreen = () => {
       <SearchBar
         term={term}
         onTermChange={newValue => setTerm(newValue)}
-        onTermSubmit={() => searchAPI(term)} //term is from the state
+        onTermSubmit={() => searchAPI(term)} //term is from the state (search is done here)
       />
       {errorMessage ? <Text>Found :{results.length}</Text> : null}
       {/* scroll view allows to scroll */}
@@ -34,7 +37,12 @@ const SearchScreen = () => {
         />
         <ResultList title="Bit Pricier" results={filterResultsByPrice("$$")} />
         <ResultList title="Big Spender" results={filterResultsByPrice("$$$")} />
+
+        {/* This is for the test  */}
+        <RestaurantsList />
       </ScrollView>
+      {/* These components are using redux as a state
+       */}
     </>
   );
 };
