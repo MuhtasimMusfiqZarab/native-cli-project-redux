@@ -1,5 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import React, { useEffect } from "react";
+import { animate } from "../helpers/animation";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  LayoutAnimation
+} from "react-native";
 
 //-----------------These are the steps to call action & change redux state
 //to update the currently selected library we need to call the action creator
@@ -10,20 +17,19 @@ import { connect } from "react-redux";
 const Listitem = props => {
   console.log(props);
   const { id, title, description } = props.item.item; // this props is from restaurantList
-  const { selectedResId } = props;
 
   //helper function to render description
   const renderDescription = () => {
-    if (id === selectedResId) {
+    if (props.expanded) {
       //return description description jsx
-
-      return <Text>{description}</Text>;
+      return <Text style={styles.list}>{description}</Text>;
     }
   };
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
+        animate();
         props.selectRestaurant(id); // this action creator will be auto dispatched
       }}
     >
@@ -46,9 +52,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
+//ownProps is is props passed to the component(here ListItem )=> this is for pre calculation
+const mapStateToProps = (state, ownProps) => {
+  //ownProps is equal to props inside the component
+  const expanded = state.selectedResId === ownProps.item.item.id;
+
   return {
-    selectedResId: state.selectedResId
+    expanded
   };
 };
 
