@@ -1,5 +1,11 @@
-// importing the data
-import data from "./RestaurantsList.json";
+//initial state can't be undefiend thus returning empty arrray of objects
+export default (state = [], action) => {
+  //this is true for every reducer boilerplate (using swtich)
+  switch (action.type) {
+    case "FETCH_RESTAURANTS":
+      return action.payload;
 
-//returning the data to the state
-export default () => data;
+    default:
+      return state;
+  }
+};

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { connect } from "react-redux";
+
+import { fetchRestaurant } from "../actions";
+
+//importing other modules
 import SearchBar from "../components/SearchBar";
 import ResultList from "../components/ResultList";
-//importing the hooks we have created
-import useResults from "../hooks/useResults";
 
-//-------------using redux
-import RestaurantsList from "../components/RestaurantsList";
-
-const SearchScreen = () => {
+const SearchScreen = props => {
   const [term, setTerm] = useState("");
-  //extracting values from hooks
-  const [searchAPI, results, errorMessage] = useResults();
+  //destructuring from props
+  const { results } = props;
 
   // helper func to filter according to price
   const filterResultsByPrice = price => {
@@ -19,17 +19,14 @@ const SearchScreen = () => {
   };
 
   return (
-    // flex: 1 lets the <View> / <> to use the visible area of the screen
-    //use => when contents are cut off and expanding out of the screen
     <>
       {/* must provide both the term and onTermChange callback to change it */}
       <SearchBar
         term={term}
         onTermChange={newValue => setTerm(newValue)}
-        onTermSubmit={() => searchAPI(term)} //term is from the state (search is done here)
+        onTermSubmit={() => props.fetchRestaurant(term)} //term is from the state (search is done here)
       />
-      {errorMessage ? <Text>Found :{results.length}</Text> : null}
-      {/* scroll view allows to scroll */}
+
       <ScrollView>
         <ResultList
           title="Cost Effective"
@@ -39,7 +36,7 @@ const SearchScreen = () => {
         <ResultList title="Big Spender" results={filterResultsByPrice("$$$")} />
 
         {/* This is for the test  */}
-        <RestaurantsList />
+        {/* <RestaurantsList /> */}
       </ScrollView>
       {/* These components are using redux as a state
        */}
@@ -49,4 +46,14 @@ const SearchScreen = () => {
 
 const styles = StyleSheet.create({});
 
-export default SearchScreen;
+const mapStateToProps = state => {
+  //must return to be used by this component
+  return {
+    results: state.restaurants
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchRestaurant }
+)(SearchScreen);
