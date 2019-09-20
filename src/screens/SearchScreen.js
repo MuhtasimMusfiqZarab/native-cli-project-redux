@@ -9,7 +9,9 @@ import SearchBar from "../components/SearchBar";
 import ResultList from "../components/ResultList";
 
 const SearchScreen = props => {
+  const init = "pasta";
   const [term, setTerm] = useState("");
+  props.fetchRestaurant(init);
   //destructuring from props
   const { results } = props;
 
