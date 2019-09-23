@@ -34,9 +34,9 @@ export const fetchRestaurant = searchTerm => {
 
 //---------This action fetches images from a fake image
 
-export const fetchImages = () => {
+export const fetchImages = page => {
   return async function(dispatch, getState) {
-    const response = await json.get("/photos");
+    const response = await json.get(`/photos?_limit=10&_page=${page}`);
     //manually dispatching this action object from action creator
     dispatch({ type: "FETCH_IMAGES", payload: response.data });
   };
