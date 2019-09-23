@@ -8,6 +8,8 @@ import {
 } from "react-native";
 
 //importing this would allow navigation
+// as a child, ResultDetail component does not inherit navigation from here
+// thus we are passing with navigation to get navigation as a prop
 import { withNavigation } from "react-navigation";
 
 import ResultDetail from "./ResultDetail";
